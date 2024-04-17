@@ -1,5 +1,6 @@
 import io
 import json
+import os
 import zipfile
 import random
 from datetime import datetime
@@ -16,6 +17,8 @@ class NovelAI:
         with open("./token.txt", "r") as file:
             self.token = file.read()
         self.output_folder = output_folder
+        if not os.path.exists(self.output_folder):
+            os.makedirs(self.output_folder)
 
     def _request_data(self, prompt: str, negative_prompt: str):
         url = "https://image.novelai.net/ai/generate-image"
@@ -73,12 +76,16 @@ class NovelAI:
             response = requests.request("POST", url, headers=headers, data=payload)
             return response
         except Exception as e:
-            print("请求失败")
+            self.log.exception("请求失败")
             return None
 
     def _parse_data(self, response: requests.models.Response):
-        if response == None or response.status_code != 200:
+        if response == None:
             raise Exception("请求失败")
+        elif response.status_code == 429:
+            raise Exception("别人在跑")
+        elif response.status_code != 200:
+            raise Exception("未知错误")
 
         zip_data = io.BytesIO(response.content)
         with zipfile.ZipFile(zip_data, 'r') as zip_file:
@@ -87,7 +94,7 @@ class NovelAI:
                 image_data = zip_file.read(file_list[0])
                 with open(rf'{self.output_folder}/{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.jpg', 'wb') as f:
                     f.write(image_data)
-        print("图片保存成功")
+        self.log.info("图片保存成功")
 
     def generate(self, prompt: str, negative_prompt: str):
         try:
@@ -97,6 +104,5 @@ class NovelAI:
         except Exception as e:
             self.num_error += 1
             if self.num_error > 5:
-                raise Exception("请求失败次数过多，为了保护账号，终止程序")
-
-            print(f"第{self.num_error}次请求失败")
+                raise Exception("请求失败次数过多，为了保护账号，在最外层终止程序")
+            self.log.exception(f"第{self.num_error}次请求失败")
