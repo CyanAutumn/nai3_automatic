@@ -1,30 +1,18 @@
 import os
 import random
 
-artist_list = [
-    'ciloranko',
-    'sho_(sho_lwlw)',
-    'tianliang_duohe_fangdongye',
-    'onineko',
-    'rhasta',
-    'suimya',
-    'muririn',
-    'ciloranko',
-    'sho_(sho_lwlw)',
-    'hoshi_(snacherubi)',
-    'kase_daiki',
-    'wlop',
-    'eip_(pepai)',
-    'rukako',
-    'memmo',
-    'memeno',
-    'toosaka_asagi',
-    'ask(askzy)'
-    'kaede_(sayappa)',
-    'jima',
-    'sheya',
-    'toosaka asagi'
-]
+# artist_list = ['ciloranko', 'sho_(sho_lwlw)', 'tianliang_duohe_fangdongye', 'onineko', 'rhasta', 'suimya', 'muririn',
+#                'hoshi_(snacherubi)', 'kase_daiki', 'wlop', 'eip_(pepai)', 'rukako', 'memmo', 'memeno', 'toosaka_asagi',
+#                'ask(askzy)' 'kaede_(sayappa)', 'jima', 'sheya','henreader','yuuhagi_(amaretto-no-natsu)']
+artist_list = ['akakura', 'aki99', 'alphonse_(white_datura)', 'ama_mitsuki', 'amazuyu_tatsuki', 'anmi',
+               'ask(askzy)kaede_(sayappa)', 'chen_bin', 'ciloranko', 'cogecha', 'demizu_posuka', 'eip_(pepai)',
+               'fukuro_daizi', 'gomano_rio', 'gomzi', 'henreader', 'hiten', 'hoshi_(snacherubi)', 'jima',
+               'kaede_(sayappa)', 'kantoku', 'kase_daiki', 'kousaki_rui', 'kuzuvine', 'kyabekko', 'memeno', 'memmo',
+               'mignon', 'mikozin', 'minaba_hideo', 'miv4t', 'mochizuki_kei', 'modare', 'muririn', 'naga_u', 'namie',
+               'novelance', 'onineko', 'rasusurasu', 'rei_(sanbonzakura)', 'reoen', 'rhasta', 'rukako', 'sheya',
+               'shiro9jira', 'sho_(sho_lwlw)', 'suimya', 'sy4', 'tianliang_duohe_fangdongye', 'toosaka asagi',
+               'toosaka_asagi', 'topia', 'wanke', 'wlop', 'yoneyama_mai', 'henreader', 'yuuhagi_(amaretto-no-natsu)']
+
 
 def random_aritst():
     """随机画师串"""

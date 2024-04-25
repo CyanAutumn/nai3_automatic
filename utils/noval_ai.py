@@ -13,12 +13,13 @@ class NovelAI:
 
     num_error = 0
 
-    def __init__(self, output_folder='./output'):
+    def __init__(self, output_folder='./output',save_prompt=False):
         with open("./token.txt", "r") as file:
             self.token = file.read()
         self.output_folder = output_folder
         if not os.path.exists(self.output_folder):
             os.makedirs(self.output_folder)
+        self.save_prompt = save_prompt
 
     def _request_data(self, prompt: str, negative_prompt: str):
         url = "https://image.novelai.net/ai/generate-image"
@@ -79,7 +80,7 @@ class NovelAI:
             self.log.exception("请求失败")
             return None
 
-    def _parse_data(self, response: requests.models.Response):
+    def _parse_data(self, prompt:str,response: requests.models.Response):
         if response == None:
             raise Exception("请求失败")
         elif response.status_code == 429:
@@ -92,14 +93,19 @@ class NovelAI:
             file_list = zip_file.namelist()
             if file_list:
                 image_data = zip_file.read(file_list[0])
-                with open(rf'{self.output_folder}/{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.jpg', 'wb') as f:
+                file_name=datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+                with open(rf'{self.output_folder}/{file_name}.jpg', 'wb') as f:
                     f.write(image_data)
+                if self.save_prompt:
+                    with open(rf'{self.output_folder}/{file_name}.txt','w', encoding='utf-8') as f:
+                        text=prompt.split(',year 2023,')[1]
+                        f.write(text)
         self.log.info("图片保存成功")
 
     def generate(self, prompt: str, negative_prompt: str):
         try:
             response = self._request_data(prompt, negative_prompt)
-            self._parse_data(response)
+            self._parse_data(prompt,response)
             self.num_error = 0
         except Exception as e:
             self.num_error += 1
